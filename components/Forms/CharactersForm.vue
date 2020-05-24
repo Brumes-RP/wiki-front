@@ -138,7 +138,8 @@ export default {
         const data = {
           name: this.content.name,
           description: this.content.description,
-          infobox: this.content.infobox
+          infobox: this.content.infobox,
+          active: false
         }
 
         if (this.editionMode) {
