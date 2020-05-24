@@ -101,7 +101,9 @@ export default {
 
   methods: {
     compiledMarkdown (text) {
-      return marked(text)
+      return marked(text, {
+        breaks: true // Force the new line to respect what the user typed
+      })
     },
 
     handleEdit () {
