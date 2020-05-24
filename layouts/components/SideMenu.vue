@@ -63,7 +63,7 @@ export default {
           alert(`Cette option n'est pas supportée par la version alpha`)
           break
         case 'portal':
-          alert(`Cette option n'est pas supportée par la version alpha`)
+          window.location.href = 'https://brumes-rp.fr/'
       }
     }
   }
