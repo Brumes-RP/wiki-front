@@ -138,8 +138,7 @@ export default {
         const data = {
           name: this.content.name,
           description: this.content.description,
-          infobox: this.content.infobox,
-          active: false
+          infobox: this.content.infobox
         }
 
         if (this.editionMode) {
@@ -156,6 +155,7 @@ export default {
           this.$store.dispatch('chara/addNewCharacter', {
             category: this.$route.query.category,
             file: this.file,
+            active: false,
             data
           }).then(() => this.$router.push({
             name: 'characters'
