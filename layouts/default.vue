@@ -89,7 +89,19 @@ export default {
     }
   },
 
-  beforeCreate () {
+  watch: {
+    theme (oldTheme, newTheme) {
+      if (this.theme.primary) { this.$vuetify.theme.themes.dark.primary = this.theme.primary }
+      if (this.theme.secondary) { this.$vuetify.theme.themes.dark.secondary = this.theme.secondary }
+      if (this.theme.accent) { this.$vuetify.theme.themes.dark.accent = this.theme.accent }
+      if (this.theme.info) { this.$vuetify.theme.themes.dark.info = this.theme.info }
+      if (this.theme.warning) { this.$vuetify.theme.themes.dark.warning = this.theme.warning }
+      if (this.theme.error) { this.$vuetify.theme.themes.dark.error = this.theme.error }
+    }
+
+  },
+
+  beforeMount () {
     this.$axios
       .get('/themes', {
         params: {
