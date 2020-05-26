@@ -1,38 +1,42 @@
 <template>
   <v-app dark>
-    <NavigationDrawer />
-    <v-app-bar
-      :src="theme ? theme.cover.url : undefined"
-      color="primary darken-1"
-      fade-img-on-scroll
-      shrink-on-scroll
-      clipped-left
-      prominent
-      fixed
-      app
-    >
-      <template v-slot:img="{ props }">
-        <v-img
-          v-bind="props"
-          gradient="to top, rgba(31, 31, 31, .8) 25%, rgba(48, 48, 48, .2)"
-        />
-      </template>
-      <v-app-bar-nav-icon @click.stop="handleDrawer" />
-      <v-toolbar-title class="pl-3">
-        <h1 class="title">
-          {{ appTitle ? appTitle : '...' }}
-          <span class="subtitle-1 hidden-sm-and-down">
-            - {{ $store.state.pageTitle }}
-          </span>
-        </h1>
-      </v-toolbar-title>
-      <v-spacer />
-      <side-menu v-if="isAuthenticated" />
-      <v-btn v-else @click="handleLogin" icon>
-        <v-icon>
-          mdi-account
-        </v-icon>
-      </v-btn>
+    <div v-if="loading">
+      Chargement du thème...
+    </div>
+    <div v-else>
+      <NavigationDrawer />
+      <v-app-bar
+        :src="theme ? theme.cover.url : undefined"
+        color="primary darken-1"
+        fade-img-on-scroll
+        shrink-on-scroll
+        clipped-left
+        prominent
+        fixed
+        app
+      >
+        <template v-slot:img="{ props }">
+          <v-img
+            v-bind="props"
+            gradient="to top, rgba(31, 31, 31, .8) 25%, rgba(48, 48, 48, .2)"
+          />
+        </template>
+        <v-app-bar-nav-icon @click.stop="handleDrawer" />
+        <v-toolbar-title class="pl-3">
+          <h1 class="title">
+            {{ appTitle ? appTitle : '...' }}
+            <span class="subtitle-1 hidden-sm-and-down">
+              - {{ $store.state.pageTitle }}
+            </span>
+          </h1>
+        </v-toolbar-title>
+        <v-spacer />
+        <side-menu v-if="isAuthenticated" />
+        <v-btn v-else @click="handleLogin" icon>
+          <v-icon>
+            mdi-account
+          </v-icon>
+        </v-btn>
       <!-- <template v-slot:extension>
         <v-tabs
           align-with-title
@@ -42,16 +46,17 @@
           <v-tab>Infos légales</v-tab>
         </v-tabs>
       </template> -->
-    </v-app-bar>
-    <v-content>
-      <v-container>
-        <v-layout column>
-          <Breadcrumb />
-          <nuxt />
-          <Notifications />
-        </v-layout>
-      </v-container>
-    </v-content>
+      </v-app-bar>
+      <v-content>
+        <v-container>
+          <v-layout column>
+            <Breadcrumb />
+            <nuxt />
+            <Notifications />
+          </v-layout>
+        </v-container>
+      </v-content>
+    </div>
   </v-app>
 </template>
 
@@ -75,6 +80,7 @@ export default {
   },
 
   data: () => ({
+    loading: true,
     theme: ''
   }),
 
@@ -90,6 +96,7 @@ export default {
   },
 
   watch: {
+    // Define the global theme
     theme (oldTheme, newTheme) {
       if (this.theme.primary) { this.$vuetify.theme.themes.dark.primary = this.theme.primary }
       if (this.theme.secondary) { this.$vuetify.theme.themes.dark.secondary = this.theme.secondary }
@@ -102,15 +109,7 @@ export default {
   },
 
   beforeMount () {
-    this.$axios
-      .get('/themes', {
-        params: {
-          'game.title': pkg.targetDomain
-        }
-      })
-      .then((response) => {
-        this.theme = response.data[0]
-      })
+    this.fetchTheme()
   },
 
   methods: {
@@ -120,6 +119,19 @@ export default {
 
     handleLogin () {
       this.$router.push('/login')
+    },
+
+    async fetchTheme () {
+      await this.$axios
+        .get('/themes', {
+          params: {
+            'game.title': pkg.targetDomain
+          }
+        })
+        .then((response) => {
+          this.theme = response.data[0]
+        })
+      this.loading = false
     }
   }
 }

@@ -1,4 +1,4 @@
-const colors = require('vuetify/es5/util/colors').default
+// const colors = require('vuetify/es5/util/colors').default
 
 module.exports = {
   mode: 'universal',
@@ -20,7 +20,12 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#fff' },
+  // loading: { color: '#fff' },
+  loadingIndicator: {
+    name: 'circle',
+    color: '#ffffff',
+    background: '#303030'
+  },
   /*
   ** Global CSS
   */
@@ -28,12 +33,14 @@ module.exports = {
     '~/assets/transitions.scss',
     '~/assets/custom.scss'
   ],
+
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
     '~/plugins/axios'
   ],
+
   /*
   ** Nuxt.js dev-modules
   */
@@ -42,6 +49,7 @@ module.exports = {
     '@nuxtjs/eslint-module',
     '@nuxtjs/vuetify'
   ],
+
   /*
   ** Nuxt.js modules
   */
@@ -58,6 +66,7 @@ module.exports = {
       'breadcrumb'
     ]
   },
+
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
@@ -65,6 +74,7 @@ module.exports = {
   axios: {
     baseURL: 'https://brumes-api.herokuapp.com/'
   },
+
   /*
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module
@@ -75,6 +85,7 @@ module.exports = {
       dark: true
     }
   },
+
   /*
   ** Build configuration
   */
